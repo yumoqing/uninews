@@ -2,17 +2,18 @@ import importlib
 
 def buildProvider(newsfeed, providerName):
 	_module = importlib.import_module(providerName)
-	return _module.buildProvider(tts)
+	return _module.buildProvider(newsfeed)
 
 class NewsFeed:
 	def __init__(self, providerName):
-		self.provider = buildProvider(self, provideName)
+		self.provider = buildProvider(self, providerName)
 		self.result_keys = [
 			'total',
-			'articles'
+			'articles',
+			'rows',
 			'page'
 		]
-		self.catepory = [
+		self.categories = [
             'business',
             'entertainment',
             'environment',
@@ -132,74 +133,73 @@ class NewsFeed:
 			'publish_date'
 		]
 
-	def headline(self, q=None, language=[], country=[], 
-					category=[],
-					page_size=None,
+	def headline(self, q=None, language=[], countries=[], 
+					categories=[],
 					page=1):
 		language = self._language_mapping(language)
-		country = self._country_mapping(country)
-		category = self._category_mapping(category)
+		countries = self._country_mapping(countries)
+		categories = self._category_mapping(categories)
 		ret = self.provider.headline(q=q, language=language,
-						country=country,
-						category=category,
-						page_size=page_size,
+						countries=countries,
+						categories=categories,
 						page=page)
 		return self._newsset(ret)
 
-	def topic(self, q=None, language=[], country=[], 
-					category=[],
-					page_size=None,
+	def topic(self, q=None, language=[], countries=[], 
+					categories=[],
 					page=1):
 		language = self._language_mapping(language)
-		country = self._country_mapping(country)
-		category = self._category_mapping(category)
+		countries = self._country_mapping(countries)
+		categories = self._category_mapping(categories)
 		ret = self.provider.headline(q=q, language=language,
-						country=country,
-						category=category,
-						page_size=page_size,
+						countries=countries,
+						categories=categories,
 						page=page)
 		return self._newsset(ret)
 
-	def topstory(self, q=None, language=[], country=[],
-					category=category,
-					page_size=None,
+	def topstory(self, q=None, language=[], countries=[],
+					categories=[],
 					page=1):
 		language = self._language_mapping(language)
-		country = self._country_mapping(country)
-		category = self._category_mapping(category)
+		countries = self._country_mapping(countries)
+		categories = self._category_mapping(categories)
 		ret = self.provider.topstory(q=q, language=language,
-						country=country,
-						category=category,
-						page_size=page_size,
+						countries=countries,
+						categories=categories,
 						page=page)
 		return self._newsset(ret)
 
 	def _language_mapping(self, language):
-		assert isinstance(language, array)
+		assert isinstance(language, list)
 		mapping = self.provider.get_language_mapping()
+		if mapping is None:
+			return language
 		return [ mapping.get(i,i) for i in language ]
 
-	def _country_mapping(self, country):
-		assert isinstance(country, array):
+	def _country_mapping(self, countries):
+		assert isinstance(countries, list)
 		mapping = self.provider.get_country_mapping()
-		return [ mapping.get(i, i) for i in country ]
+		if mapping is None:
+			return countries
+		return [ mapping.get(i, i) for i in countries ]
 
-	def _category_mapping(self, country):
-		assert isinstance(country, array):
+	def _category_mapping(self, countries):
+		assert isinstance(countries, list)
 		mapping = self.provider.get_category_mapping()
-		return [ mapping.get(i, i) for i in country ]
+		if mapping is None:
+			return countries
+		return [ mapping.get(i, i) for i in countries ]
 
-	def news(self, q=None, language=[], country=[],
-					category=category,
-					page_size=None,
+	def news(self, q=None, language=[], countries=[],
+					categories=[],
 					page=1):
 		language = self._language_mapping(language)
-		country = self._country_mapping(country)
-		category = self._category_mapping(category)
-		ret = self.provider.news(q=q, language=language,
-						country=country,
-						category=category,
-						page_size=page_size,
+		countries = self._country_mapping(countries)
+		categories = self._category_mapping(categories)
+		ret = self.provider.news(q=q, 
+						language=language,
+						countries=countries,
+						categories=categories,
 						page=page)
 		return self._newsset(ret)
 		
@@ -217,9 +217,12 @@ class NewsFeed:
 		return data
 
 	def get_data_by_key(self, data, k_str):
-		ks = '.'.split()
-		x = data.get(ks[0]
-		for k in ks[1:]:
+		ks = k_str.split('.')
+		x = data.get(ks[0])
+		if len(ks) < 2:
+			return x
+		ks = ks[1:]
+		for k in ks:
 			if x is None:
 				return None
 			x = x.get(k)
@@ -230,12 +233,15 @@ class NewsFeed:
 		return x
 
 	def array2param(self, arr, delimiter=','):
-		s = delimiter.join(arr)
+		if arr is None:
+			return None
+
+		s = ','.join(arr)
 		if s == '':
 			return None
 		return s
 
-	def get_countrys(self):
+	def get_countries(self):
 		return {
 				'ar':'Argentina',
 				'am':'Armenia',

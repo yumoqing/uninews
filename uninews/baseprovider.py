@@ -8,7 +8,7 @@ class BaseProvider:
 	def topic(self, *args, **kw):
 		return None
 
-	def headline(self, *args, *kw):
+	def headline(self, *args, **kw):
 		return None
 
 	def topstory(self, *args, **kw):
