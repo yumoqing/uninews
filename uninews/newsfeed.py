@@ -168,7 +168,7 @@ class NewsFeed:
 		language = self._language_mapping(language)
 		countries = self._country_mapping(countries)
 		categories = self._category_mapping(categories)
-		ret = self.provider.news(q=q, 
+		ret = self.provider.last_news(q=q, 
 						language=language,
 						countries=countries,
 						domains=domains,
@@ -187,7 +187,7 @@ class NewsFeed:
 		language = self._language_mapping(language)
 		countries = self._country_mapping(countries)
 		categories = self._category_mapping(categories)
-		ret = self.provider.headline(q=q, language=language,
+		ret = self.provider.hist_news(q=q, language=language,
 						countries=countries,
 						categories=categories,
 						sources=sources,
