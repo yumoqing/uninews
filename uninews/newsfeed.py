@@ -144,6 +144,7 @@ class NewsFeed:
 		self.source_keys = [
 			'id',
 			'name',
+			'description',
 			'link',
 			'categories',
 			'languange',
@@ -159,9 +160,10 @@ class NewsFeed:
 							language=language)
 		return self._sourcesset(ret)
 		
-	def news(self, q=None, language=[], countries=[],
+	def last_news(self, q=None, language=[], countries=[],
 					categories=[],
 					domains=[],
+					sources=[],
 					page=1):
 		language = self._language_mapping(language)
 		countries = self._country_mapping(countries)
@@ -170,13 +172,17 @@ class NewsFeed:
 						language=language,
 						countries=countries,
 						domains=domains,
+						sources=sources,
 						categories=categories,
 						page=page)
 		return self._newsset(ret)
 		
-	def headline(self, q=None, language=[], countries=[], 
+	def hist_news(self, q=None, language=[], countries=[], 
 					categories=[],
 					sources=[],
+					domains=[],
+					from_date=None,
+					to_date=None,
 					page=1):
 		language = self._language_mapping(language)
 		countries = self._country_mapping(countries)
@@ -185,34 +191,9 @@ class NewsFeed:
 						countries=countries,
 						categories=categories,
 						sources=sources,
-						page=page)
-		return self._newsset(ret)
-
-	def topic(self, q=None, language=[], countries=[], 
-					categories=[],
-					sources=[],
-					page=1):
-		language = self._language_mapping(language)
-		countries = self._country_mapping(countries)
-		categories = self._category_mapping(categories)
-		ret = self.provider.headline(q=q, language=language,
-						countries=countries,
-						categories=categories,
-						sources=sources,
-						page=page)
-		return self._newsset(ret)
-
-	def topstory(self, q=None, language=[], countries=[],
-					categories=[],
-					sources=[],
-					page=1):
-		language = self._language_mapping(language)
-		countries = self._country_mapping(countries)
-		categories = self._category_mapping(categories)
-		ret = self.provider.topstory(q=q, language=language,
-						countries=countries,
-						categories=categories,
-						sources=sources,
+						domains=domains,
+						from_date=from_date,
+						to_date=to_date,
 						page=page)
 		return self._newsset(ret)
 
@@ -237,7 +218,7 @@ class NewsFeed:
 			return countries
 		return [ mapping.get(i, i) for i in countries ]
 
-	def sourcesset(self, retdata):
+	def _sourcesset(self, retdata):
 		result_mapping = self.provider.source_result_mapping()
 		if result_mapping is None:
 			return retdata
