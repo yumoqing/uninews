@@ -10,7 +10,7 @@ pip install uninews
 
 * [TheNewsApp](https://TheNewsApi.com)
 * [NewsCatcherApi](https://newscatcherapi.com)
-* [NewsData.io](httsp://newsdata.io)
+* [NewsData.io](https://newsdata.io)
 * [GoogleNews](https://pypi.org/project/pygooglenews)
 
 ## Usage
