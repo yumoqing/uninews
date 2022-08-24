@@ -94,9 +94,10 @@ article is a dict contains following keys:
 
 
 ## provider
-* [newsdataio](https://pypi.org/project/newsdataio)
-* [news_yapi](https://pypi.org/project/news_yapi)
-* [thenewsapi](https://pypi.org/project/thenewsapi)
+the following provider is tested
+* [newsdataio](https://pypi.org/project/newsdataio) for https://newsdata.io
+* [news_yapi](https://pypi.org/project/news_yapi) for [newsapi](https://newsapi.org)
+* [thenewsapi](https://pypi.org/project/thenewsapi) for [thenewsapi](
 
 ## working on provider
 * google feed news provider
