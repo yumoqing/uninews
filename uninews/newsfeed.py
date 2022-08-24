@@ -219,7 +219,7 @@ class NewsFeed:
 		return [ mapping.get(i, i) for i in countries ]
 
 	def _sourcesset(self, retdata):
-		result_mapping = self.provider.source_result_mapping()
+		result_mapping = self.provider.sources_result_mapping()
 		if result_mapping is None:
 			return retdata
 		data = self.dictmap(self.sources_result_keys, \
