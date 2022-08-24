@@ -17,7 +17,7 @@ setup(
 	packages=['uninews'],
 	version=version,
 	description='a unitts driver for ios device, it use AVFoundation.AVSpeechSynthesizer',
-	summary='pyttsx3 driver for ios device',
+	# summary='uninews a unified news feed api',
 	author='Yu Moqing',
 	url='https://github.com/yumoqing/uninews',
 	long_description=long_description,
